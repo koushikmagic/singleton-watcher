@@ -35,8 +35,8 @@
             },
             _config = watcherUtil.isObject(config) ? config : {},
             objectMonitor = _config.objectMonitor ? _config.objectMonitor : window,
-            eventProxy = watcherUtil.isObject(_config.eventProxy) ? _config.eventProxy : window,
-            args = watcherUtil.isArray(_config.args) ? _config.args : [],
+            eventProxy = watcherUtil.isObject(_config.proxy) ? _config.proxy : (_config.proxy ? false : window),
+            args = watcherUtil.isArray(_config.args) ? _config.args : (watcherUtil.isUndefined(_config.args) ? [] : [_config.args]),
             deep = !!config.deep,
             compare = _config.compare ? _config.compare : function(newVal, oldVal) {
                 return watcherUtil.compare(newVal, oldVal, deep);
@@ -57,7 +57,8 @@
             var _eventArgs = watcherUtil.isArray(eventArgs) ? eventArgs :
                 (watcherUtil.isObject(eventArgs) ? [eventArgs] : []);
             setTimeout(function() {
-                eventCallback.apply(eventProxy, _eventArgs);
+                var proxy = eventProxy ? eventProxy : _getCurrentVal();
+                eventCallback.apply(proxy, _eventArgs);
             }, 0);
         };
 
