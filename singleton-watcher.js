@@ -19,15 +19,12 @@
             COMPARATOR_REQUIRED: 5,
             DEEP_CHECKING_NEEDED: 6
         },
-        executor,
-        watchCycle = false,
-        asyncWatch = false;
+        executor;
 
     _interval = 200;
     watcher.RESPONSE_STATES = STATES;
 
     calculateInterval = function() {
-
     };
 
     watcher.addWatch = function(toWatch, config) {
@@ -63,7 +60,6 @@
                 eventCallback.apply(eventProxy, _eventArgs);
             }, 0);
         };
-
 
         switch (watchType) {
             case 'function':
@@ -107,6 +103,7 @@
         }
         return response;
     };
+
     watcher.removeWatch = function(toWatchOrId) {
         var idx, watchItem;
         for (idx = 0; idx < _queue.length; idx++) {
@@ -161,10 +158,13 @@
     };
 
     stopTimer = function() {
-        window.clearInterval(hwndTimer);
+        if (hwndTimer !== null) {
+            window.clearInterval(hwndTimer);
+            hwndTimer = null;
+        }
     };
-    startTimer = function(restart) {
-        if (restart) {
+    startTimer = function() {
+        if (hwndTimer !== null) {
             stopTimer();
         }
         hwndTimer = window.setInterval(executor, _interval);
