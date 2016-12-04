@@ -203,7 +203,7 @@
     watcherUtil.isArray = Array.isArray;
 
     watcherUtil.canDeepCheck = function() {
-        return !!window._;
+        return !!window._ && this.isFunction(window._.isEqual);
     };
     watcherUtil.compare = function(newVal, oldVal, deep) {
         var _this = this,
