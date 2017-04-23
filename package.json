@@ -1,0 +1,19 @@
+{
+  "name": "singleton-watcher",
+  "version": "1.0.0",
+  "description": "A watcher for watching multiple values (don't have native support) with a single timer.",
+  "main": "singleton-watcher.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/koushikmagic/singleton-watcher.git"
+  },
+  "author": "Koushik Chatterjee <koushikneed@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/koushikmagic/singleton-watcher/issues"
+  },
+  "homepage": "https://github.com/koushikmagic/singleton-watcher#readme"
+}
