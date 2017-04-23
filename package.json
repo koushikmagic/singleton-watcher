@@ -1,6 +1,6 @@
 {
   "name": "singleton-watcher",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A watcher for watching multiple values (don't have native support) with a single timer.",
   "main": "singleton-watcher.js",
   "scripts": {
