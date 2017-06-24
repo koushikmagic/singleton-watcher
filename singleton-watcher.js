@@ -1,6 +1,9 @@
-(function(window) {
+(function() {
     'use strict';
-    var watcher = {},
+    var root,
+        isNode = false,
+        _ = null,
+        watcher = {},
         watcherUtil = {},
         _queue = [],
         WatchItem,
@@ -24,6 +27,19 @@
     _interval = 200;
     watcher.RESPONSE_STATES = STATES;
 
+    if(typeof window==='object' && typeof window.window==='object' && typeof window.navigator==='object') {
+        root = window;
+        _ = root._ ? root._ : null;
+        root.SingletonWatcher = watcher;
+    } else if(typeof module !== 'undefined' && module.exports) {
+        root = global;
+        _ = require('underscore');
+        module.exports = watcher;
+        isNode = true;
+    } else {
+        throw("Unsupported Environment")
+    }
+
     calculateInterval = function() {
     };
 
@@ -34,10 +50,10 @@
                 status: false
             },
             _config = watcherUtil.isObject(config) ? config : {},
-            objectMonitor = _config.objectMonitor ? _config.objectMonitor : window,
-            eventProxy = watcherUtil.isObject(_config.proxy) ? _config.proxy : (_config.proxy ? false : window),
+            objectMonitor = _config.objectMonitor ? _config.objectMonitor : root,
+            eventProxy = watcherUtil.isObject(_config.proxy) ? _config.proxy : (_config.proxy ? false : root),
             args = watcherUtil.isArray(_config.args) ? _config.args : (watcherUtil.isUndefined(_config.args) ? [] : [_config.args]),
-            deep = !!config.deep,
+            deep =!!config &&  !!config.deep,
             compare = _config.compare ? _config.compare : function(newVal, oldVal) {
                 return watcherUtil.compare(newVal, oldVal, deep);
             },
@@ -138,7 +154,7 @@
         };
         this.isSourceFrom = function(sourceCheck) {
             sourceCheck = typeof sourceCheck === 'string' ? parseInt(sourceCheck) : sourceCheck;
-            return sourceCheck === source || sourceCheck === this.id;
+            return (watcherUtil.isObject(sourceCheck) ? sourceCheck.id : sourceCheck) === this.id;
         }
     };
 
@@ -153,14 +169,14 @@
                     item.resetLastVal();
                 }
             } catch (e) {
-                window.console.log('Exception: ', e);
+                root.console.log('Exception: ', e);
             }
         });
     };
 
     stopTimer = function() {
         if (hwndTimer !== null) {
-            window.clearInterval(hwndTimer);
+            root.clearInterval(hwndTimer);
             hwndTimer = null;
         }
     };
@@ -168,7 +184,7 @@
         if (hwndTimer !== null) {
             stopTimer();
         }
-        hwndTimer = window.setInterval(executor, _interval);
+        hwndTimer = root.setInterval(executor, _interval);
     }
 
     /*Watcher Event*/
@@ -187,7 +203,7 @@
         } else if (watcherUtil.isArray(toClone)) {
             return Array.from(toClone);
         } else if (watcherUtil.isObject(toClone)) {
-            return window._ ? _.clone(toClone) : Object.assign({}, toClone);
+            return _ ? _.clone(toClone) : Object.assign({}, toClone);
         } else {
             return toClone;
         }
@@ -204,7 +220,7 @@
     watcherUtil.isArray = Array.isArray;
 
     watcherUtil.canDeepCheck = function() {
-        return !!window._ && this.isFunction(window._.isEqual);
+        return !!_ && this.isFunction(_.isEqual);
     };
     watcherUtil.compare = function(newVal, oldVal, deep) {
         var _this = this,
@@ -212,7 +228,7 @@
                 if (!_this.canDeepCheck()) {
                     return true;
                 } else {
-                    return window._.isEqual(n, o);
+                    return _.isEqual(n, o);
                 }
             };
 
@@ -224,6 +240,4 @@
             return true;
         }
     };
-
-    window.SingletonWatcher = watcher;
-})(window);
+})();

@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/koushikmagic/singleton-watcher/issues"
   },
-  "homepage": "https://github.com/koushikmagic/singleton-watcher#readme"
+  "homepage": "https://github.com/koushikmagic/singleton-watcher#readme",
+  "dependencies": {
+    "underscore": "^1.8.3"
+  }
 }
