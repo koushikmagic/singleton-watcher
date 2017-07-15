@@ -1,7 +1,7 @@
 # singleton-watcher
 
 ## Overview
-This is a Non-native timer based watcher for any value. It will be useful when the aim is to observe values for which there is no native support so far. For example, if we want to watch height change of a particular DOM element that can be changed from anywhere. Note, if you are sure that You are using inline style/height attribute or changing the class from where the height is affecting then its better use MutationObserver or DOMSubtreeModified. It is recommended to use this watcher when there is no native support for that event delegation. Using this watcher its possible
+This is a Non-native timer based watcher for any value, which will use your cpu time, and not with a event based approach. It will be useful when the aim is to observe values for which there is no native support so far, and we have to take timer base approach. For example, if we want to watch height change of a particular DOM element that can be changed from anywhere. Note, if you are sure that You are using inline style/height attribute or changing the class from where the height is affecting then its better use MutationObserver or DOMSubtreeModified. It is recommended to use this watcher when there is no native support for that event delegation. Using this watcher its possible
 to watch any objects/array or any primitive value as well.
 
 ## Why preferred SingletonWatcher instead of manually starting a timer (interval/timeout)
