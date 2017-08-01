@@ -9,7 +9,6 @@
         WatchItem,
         WatchEvent,
         _interval = null,
-        calculateInterval,
         hwndTimer = null,
         intervalChange,
         stopTimer,
@@ -39,9 +38,6 @@
     } else {
         throw("Unsupported Environment")
     }
-
-    calculateInterval = function() {
-    };
 
     watcher.addWatch = function(toWatch, config) {
         var watchType = typeof toWatch,
